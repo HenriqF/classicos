@@ -1,0 +1,1 @@
+    espaco[depth] = '\0';
