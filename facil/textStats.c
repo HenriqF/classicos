@@ -12,6 +12,16 @@
 //  pontuacao: Simples | 33 -> 47 (fodase o resto)
 // tinha um .h pra isso...
 
+typedef struct Stats{
+    int caracteres;
+    int digitos;
+    int pontuacao;
+    int espacos;
+    int miscelaneos;
+    int palavras;
+    int numeros;
+} Stats;
+
 int main(){
     setlocale(LC_CTYPE, "");
     char* content;
@@ -35,37 +45,40 @@ int main(){
     }
     content[size] = '\0';
 
-                                    // 0   1   2   3   4   5   6
-    int stats[7] = {0,0,0,0,0,0,0}; // car dig pon esp mis pal num
+    Stats* stats = calloc(1, sizeof(Stats));
+    if (stats == NULL){
+        printf("deu merda");
+        return 1;
+    }
 
     int currentP = 0, currentN = 0;
     for (int i =0; i< size; i++){
         int c = (unsigned char)content[i];
         if (isalpha(c)){
-            stats[0]++;
+            stats->caracteres++;
             currentP = 1;
             continue;
         }
-        if (currentP == 1) stats[5]++, currentP = 0;
+        if (currentP == 1) stats->palavras++, currentP = 0;
         if (isdigit(c)){
-            stats[1]++;
+            stats->digitos++;
             currentN = 1;
             continue;
         }
-        if (currentN == 1) stats[6]++, currentN = 0;
+        if (currentN == 1) stats->numeros++, currentN = 0;
 
         if (ispunct(c)){
-            stats[2]++;
+            stats->pontuacao++;
         }
         else if (isspace(c)){
-            stats[3]++;
+            stats->espacos++;
         }
         else{
-            stats[4]++;
+            stats->miscelaneos++;
         }  
     }
-    if (currentP == 1) stats[5]++, currentP = 0;
-    if (currentN == 1) stats[6]++, currentN = 0;
+    if (currentP == 1) stats->palavras++, currentP = 0;
+    if (currentN == 1) stats->numeros++, currentN = 0;
 
     free(content);
 
@@ -84,7 +97,7 @@ int main(){
          "  miscelaneos: %d\n\n"
          "  palavras: %d\n"
          "  numeros: %d\n"
-         , stats[0], stats[1], stats[2], stats[3], stats[4], stats[5], stats[6]);
+         , stats->caracteres, stats->digitos, stats->pontuacao, stats->espacos, stats->miscelaneos, stats->palavras, stats->numeros);
     fprintf(file2,"%s", buffer);
     fclose(file2);
 
