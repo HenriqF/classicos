@@ -79,13 +79,53 @@ void newTask(){
     free(linha);
 }
 
+void markTask(){
+    int i = 0;
+    int l = 1;
+    do{
+        printf("Tarefa %d : ", l);
+        i = readListLine(i);
+        l++;
+        printf("\n");
+    }while (i<size);
 
-int main(){
-    setlocale(LC_CTYPE, "");
+    int tarefa;
+    printf("Qual tarefa marcar? \n");
+    scanf("%d", &tarefa);
+
+    if (tarefa<1 || tarefa > l){
+        return;
+    }
+    else{
+        if (tarefa == 1){
+            content[2] = '!';
+            i = 2;
+        } 
+        else{
+            int c = 0;
+            int i = 0;
+            while(i++ < size){
+                if (content[i] == '\n') c++;
+                if (c == tarefa-1) break;
+            }
+            i+=3;
+            content[i] = '!';
+        }
+        FILE* f = fopen("todo.txt", "wb");
+        if (!f){
+            printf("deu merda");
+            return;
+        }
+        fprintf(f, "%s", content);   
+        fclose(f);
+    }
+}
+
+void updateContentVar(){
     FILE* f = fopen("todo.txt", "rb");
     if (f == NULL){
         printf("Deu merda");
-        return 1;
+        return;
     }
     else{
         fseek(f, 0, SEEK_END);
@@ -98,10 +138,24 @@ int main(){
         }
         fclose(f);
     }
-
     showList();
-    newTask();
+}
 
+int main(){
+    setlocale(LC_CTYPE, "");
+
+    char resposta;
+    while (resposta!='s'){
+        //system("clear");
+        updateContentVar();
+        printf("n -> nova tarefa | m -> marcar tarefa | s -> sair\n");
+        scanf(" %c", &resposta);
+        int c;
+        while ((c = getchar()) != '\n' && c != EOF);
+
+        if (resposta == 'n') newTask();
+        if (resposta == 'm') markTask();
+    }
 
     return 0;
 }
