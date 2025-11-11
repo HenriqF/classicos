@@ -1,9 +1,0 @@
-Estatisticas:
-  caracteres: 3
-  digitos: 3
-  pontuação: 3
-  espaços: 2
-  miscelaneos: 0
-
-  palavras: 1
-  numeros: 1
