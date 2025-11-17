@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//INCOMPLETO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! (vou colocar mais alguns pra deixar claro) !!!!!!!!!!!!!
+
 typedef struct{
     char* key; 
     char* value;
@@ -79,4 +81,5 @@ int main(){
     }
 
     return 0;
+
 }
